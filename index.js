@@ -1,12 +1,43 @@
+/**
+ * Represents the input element for tasks.
+ * @type {HTMLInputElement}
+ */
 const taskInput = document.querySelector(".task-input input"),
-    filters = document.querySelectorAll(".filters span"),
-    clearAll = document.querySelector(".clear-btn"),
-    taskBox = document.querySelector(".task-box");
-
+/**
+ * Represents the filter buttons.
+ * @type {NodeList}
+ */
+filters = document.querySelectorAll(".filters span"),
+/**
+ * Represents the clear all button.
+ * @type {HTMLElement}
+ */
+clearAll = document.querySelector(".clear-btn"),
+/**
+ * Represents the task box container.
+ * @type {HTMLElement}
+ */
+taskBox = document.querySelector(".task-box");
+/**
+ * The ID of the task being edited.
+ * @type {number}
+ */
 let editId,
-    isEditTask = false,
-    todos = JSON.parse(localStorage.getItem("todo-list"));
+/**
+ * Indicates whether a task is being edited.
+ * @type {boolean}
+ */
+isEditTask = false,
+/**
+ * Represents the list of todos.
+ * @type {Array}
+ */
+todos = JSON.parse(localStorage.getItem("todo-list"));
 
+/**
+ * Adds event listeners to the filter buttons.
+ * @param {HTMLElement} btn - The filter button.
+ */
 filters.forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelector("span.active").classList.remove("active");
@@ -15,6 +46,10 @@ filters.forEach(btn => {
     });
 });
 
+/**
+ * Displays the todos based on the selected filter.
+ * @param {string} filter - The selected filter.
+ */
 function showTodo(filter) {
     let liTag = "";
     if (todos) {
@@ -46,9 +81,13 @@ function showTodo(filter) {
 }
 showTodo("all");
 
-//i have added a task before tutorial so that shows here for test
+//i have added a task before so that shows here for test
 // if you don't have any tasks no problem it isn't bug
 
+/**
+ * Displays the task menu when the ellipsis icon is clicked.
+ * @param {HTMLElement} selectedTask - The selected task.
+ */
 function showMenu(selectedTask) {
     let menuDiv = selectedTask.parentElement.lastElementChild;
     menuDiv.classList.add("show");
@@ -59,6 +98,10 @@ function showMenu(selectedTask) {
     });
 }
 
+/**
+ * Updates the status of a task.
+ * @param {HTMLInputElement} selectedTask - The selected task.
+ */
 function updateStatus(selectedTask) {
     let taskName = selectedTask.parentElement.lastElementChild;
     if (selectedTask.checked) {
@@ -71,6 +114,11 @@ function updateStatus(selectedTask) {
     localStorage.setItem("todo-list", JSON.stringify(todos))
 }
 
+/**
+ * Sets the task input field for editing a task.
+ * @param {number} taskId - The ID of the task.
+ * @param {string} textName - The name of the task.
+ */
 function editTask(taskId, textName) {
     editId = taskId;
     isEditTask = true;
@@ -79,6 +127,11 @@ function editTask(taskId, textName) {
     taskInput.classList.add("active");
 }
 
+/**
+ * Deletes a task.
+ * @param {number} deleteId - The ID of the task to delete.
+ * @param {string} filter - The current filter.
+ */
 function deleteTask(deleteId, filter) {
     isEditTask = false;
     todos.splice(deleteId, 1);
@@ -86,6 +139,9 @@ function deleteTask(deleteId, filter) {
     showTodo(filter);
 }
 
+/**
+ * Clears all tasks.
+ */
 clearAll.addEventListener("click", () => {
     isEditTask = false;
     todos.splice(0, todos.length);
@@ -93,6 +149,10 @@ clearAll.addEventListener("click", () => {
     showTodo();
 });
 
+/**
+ * Handles keyup event on the task input field.
+ * @param {Event} e - The keyup event.
+ */
 taskInput.addEventListener("keyup", e => {
     let userTask = taskInput.value.trim();
     if (e.key == "Enter" && userTask) {
